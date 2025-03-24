@@ -48,22 +48,22 @@ class _WeatherState extends State<Weather> with SingleTickerProviderStateMixin {
         latitude: widget.city.latitude,
         longitude: widget.city.longitude,
       );
-
-      print('Weather Details: $weatherDetails'); // Log the API response
-
       setState(() {
-        _weatherDetailsModel = WeatherDetailsModel(
-          precipitation: (weatherDetails['precipitation'] as num).toDouble(),
-          humidity: (weatherDetails['humidity'] as num).toDouble(),
-          windSpeed: (weatherDetails['wind_speed_10m'] as num).toDouble(),
-          airQuality: (weatherDetails['air_quality'] as num).toDouble(),
-        );
-        _isLoading = false; // Set loading to false
+        _weatherDetailsModel = WeatherDetailsModel.fromJson(weatherDetails);
+        _isLoading = false;
       });
     } catch (e) {
       setState(() {
-        _errorMessage = 'Failed to load weather details: $e';
-        _isLoading = false; // Set loading to false
+        _errorMessage = 'Failed to load weather details: ${e.toString()}';
+        _isLoading = false;
+
+        // Set default values to prevent null errors
+        _weatherDetailsModel = WeatherDetailsModel(
+          precipitation: 0,
+          humidity: 0,
+          windSpeed: 0,
+          airQuality: 0,
+        );
       });
     }
   }
@@ -72,8 +72,9 @@ class _WeatherState extends State<Weather> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     final weatherProvider = Provider.of<WeatherProvider>(context);
     final currentWeather = weatherProvider.currentTemperature;
+    final feelsLike = weatherProvider.feelsLikeTemperature;
     final currentWeatherCode = weatherProvider.currentWeatherCode;
-    final days = weatherProvider.days;
+    final days = weatherProvider.days; // This will be List<WeatherDayModel>
     final weatherIconData = getWeatherIconData(currentTime, currentWeatherCode);
 
     if (_isLoading) {
@@ -154,7 +155,7 @@ class _WeatherState extends State<Weather> with SingleTickerProviderStateMixin {
                           ),
                           // Feeling weather
                           Text(
-                            'Feels like ${currentWeather.round().toString()}º',
+                            'Feels like ${feelsLike.round().toString()}º',
                             style: TextStyle(
                               fontSize: 20,
                               color: Colors.white,
@@ -264,22 +265,14 @@ class _WeatherState extends State<Weather> with SingleTickerProviderStateMixin {
                 );
               }).toList(),
               options: CarouselOptions(
-                height: 130,
-                // Fixed height for the carousel
-                enlargeCenterPage: false,
-                // Make the center item slightly larger if it's true
-                aspectRatio: 16 / 9,
-                // Aspect ratio of each item
-                autoPlayCurve: Curves.fastOutSlowIn,
-                // Smooth scrolling animation
-                enableInfiniteScroll: false,
-                // Disable infinite scrolling
-                autoPlayAnimationDuration: Duration(milliseconds: 800),
-                // Animation duration
-                viewportFraction: 0.2,
-                // Fraction of the viewport each item occupies
-                padEnds: false,
-                // Remove padding at the ends
+                height: 130, // Fixed height for the carousel
+                enlargeCenterPage: false, // Make the center item slightly larger if it's true
+                aspectRatio: 16 / 9, // Aspect ratio of each item
+                autoPlayCurve: Curves.fastOutSlowIn, // Smooth scrolling animation
+                enableInfiniteScroll: false, // Disable infinite scrolling
+                autoPlayAnimationDuration: Duration(milliseconds: 800), // Animation duration
+                viewportFraction: 0.2, // Fraction of the viewport each item occupies
+                padEnds: false, // Remove padding at the ends
                 onPageChanged: (index, reason) {
                   setState(() {
                     _currentIndex = index; // Update the current index
@@ -318,11 +311,6 @@ class _WeatherState extends State<Weather> with SingleTickerProviderStateMixin {
                       );
                     },
                   ),
-                  // Image.asset(
-                  //   WeatherUtils.getWeatherIconFromCode(weatherCode),
-                  //   width: 40,
-                  //   height: 40,
-                  // ),
                   SizedBox(height: 10),
                   Text('${temperature.toStringAsFixed(1)}º'),
                   // Temperature for each hour
@@ -399,91 +387,6 @@ class _WeatherState extends State<Weather> with SingleTickerProviderStateMixin {
       ),
     );
   }
-
-  // Horizontal Carousel
-  //  final List<String> images = [
-  // 'https://math-media.byjusfutureschool.com/bfs-math/2022/07/04185630/Asset-2-6-300x300.png',
-  // 'https://math-media.byjusfutureschool.com/bfs-math/2022/07/04185630/Asset-2-6-300x300.png',
-  // 'https://math-media.byjusfutureschool.com/bfs-math/2022/07/04185630/Asset-2-6-300x300.png',
-  // 'https://math-media.byjusfutureschool.com/bfs-math/2022/07/04185630/Asset-2-6-300x300.png',
-  //   ];
-  // CarouselSlider(
-  //   //images.map((image) { ... }): <- images is a list of
-  //   // image URLs (or local asset paths).
-  //   // The map function iterates over each item in the
-  //   // images list and applies a transformation to it.
-  //   // For each image in the list, it returns a Container widget.
-  //   // toList():
-  //   // Converts the result of map (an iterable) into a
-  //   // List<Widget>, which is required by the items property.
-  //   // items: <- A list of widgets to display in the carousel.
-  //   items: images.map((image) {
-  //     //For each image in the images list, a Container widget is returned.
-  //     // This Container represents a single item in the carousel.
-  //     return Container(
-  //       margin: EdgeInsets.all(5),
-  //       //create spacing between carousel items
-  //       decoration: BoxDecoration(
-  //         //Defines the visual appearance of the Container
-  //         borderRadius: BorderRadius.circular(10),
-  //         image: DecorationImage(
-  //           image: NetworkImage(image),
-  //           fit: BoxFit.cover,
-  //         ),
-  //       ),
-  //     );
-  //   }).toList(),
-  //   options: CarouselOptions(
-  //     height: 100,
-  //     // autoPlay: true,
-  //     // Makes the center item slightly larger than the
-  //     // others, creating a "focus" effect.
-  //     enlargeCenterPage: true,
-  //     // Sets the aspect ratio of each carousel
-  //     // item (width to height ratio).
-  //     aspectRatio: 16 / 9,
-  //     // Defines the animation curve for auto-scrolling.
-  //     // Curves.fastOutSlowIn creates a smooth
-  //     // acceleration and deceleration effect.
-  //     autoPlayCurve: Curves.fastOutSlowIn,
-  //     // Allows the carousel to loop back to the first
-  //     // item after reaching the last item.
-  //     enableInfiniteScroll: true,
-  //     autoPlayAnimationDuration: Duration(milliseconds: 800),
-  //     // Defines the fraction of the viewport that each
-  //     // item occupies. A value of 0.8 means each item
-  //     // takes up 80% of the carousel's width.
-  //     viewportFraction: 0.8,
-  //     // A callback function that is triggered when the
-  //     // user swipes to a new item or the carousel auto-scrolls.
-  //     onPageChanged: (index, reason) {
-  //       setState(() {
-  //         // Updates the _currentIndex variable to reflect
-  //         // the currently visible item in the carousel.
-  //         // This is useful for displaying indicators
-  //         // (e.g., dots) that show the current position.
-  //         _currentIndex = index;
-  //       });
-  //     },
-  //   ),
-  // ),
-
-  // Indicators for the Carousel (....)
-  // Row(
-  //   mainAxisAlignment: MainAxisAlignment.center,
-  //   children: images.map((image) {
-  //     int index = images.indexOf(image);
-  //     return Container(
-  //       width: 8,
-  //       height: 8,
-  //       margin: EdgeInsets.symmetric(vertical: 10, horizontal: 4),
-  //       decoration: BoxDecoration(
-  //         shape: BoxShape.circle,
-  //         color: _currentIndex == index ? Colors.black : Colors.grey,
-  //       ),
-  //     );
-  //   }).toList(),
-  // ),
 }
 
 String _getAirQualityDescription(double airQualityIndex) {
@@ -506,7 +409,7 @@ Widget buildWeatherForecastItem(DayModel day) {
     // Add spacing between items
     decoration: BoxDecoration(
       // color: Colors.white.withOpacity(0.3), // Transparent container
-      color: Colors.blueAccent.withOpacity(0.3), // Transparent container
+      color: Colors.blueAccent.withOpacity(0.2), // Transparent container
       borderRadius: BorderRadius.circular(10), // Rounded corners
     ),
     child: Column(
@@ -523,10 +426,15 @@ Widget buildWeatherForecastItem(DayModel day) {
         ),
         SizedBox(height: 8), // Add spacing
         // Weather icon
-        Image.asset(
-          WeatherUtils.getWeatherIconFromCode(day.weatherCode),
-          width: 40,
-          height: 40,
+        Builder(
+          builder: (context) {
+            final iconData = getWeatherIconData(day.date, day.weatherCode);
+            return Icon(
+              iconData.icon,
+              color: iconData.color,
+              size: 40,
+            );
+          },
         ),
         SizedBox(height: 8), // Add spacing
         // Max and min temperature
@@ -554,53 +462,100 @@ WeatherIconData getWeatherIconData(DateTime dateTime, int weatherCode) {
   final isDayTime = hour >= 6 && hour < 18;
   final isNight = !isDayTime;
 
-  // Determine icon
+  // WMO Weather code interpretation
   IconData icon;
   switch (weatherCode) {
-    case 3: // Clear sky
+    case 0: // Clear sky
+      // todo to use icons like this Image.asset(WeatherUtils.getWeatherIconFromCode(weatherCode))
       icon = isDayTime ? Icons.wb_sunny : Icons.nightlight_round;
       break;
-    case 80: // Cloudy
-      icon = isDayTime ? Icons.cloud : Icons.cloud_outlined;
+    case 1: // Mainly clear
+    case 2: // Partly cloudy
+      icon = isDayTime ? Icons.wb_cloudy : Icons.cloud_outlined;
+      break;
+    case 3: // Overcast
+      icon = Icons.cloud;
+      break;
+    case 45: // Fog
+    case 48: // Depositing rime fog
+      icon = Icons.foggy;
+      break;
+    case 51: // Light drizzle
+    case 53: // Moderate drizzle
+    case 55: // Dense drizzle
+    case 56: // Light freezing drizzle
+    case 57: // Dense freezing drizzle
+      icon = Icons.grain;
+      break;
+    case 61: // Slight rain
+    case 63: // Moderate rain
+    case 65: // Heavy rain
+    case 66: // Light freezing rain
+    case 67: // Heavy freezing rain
+    case 80: // Slight rain showers
+    case 81: // Moderate rain showers
+    case 82: // Violent rain showers
+      icon = Icons.beach_access;
+      break;
+    case 71: // Slight snow fall
+    case 73: // Moderate snow fall
+    case 75: // Heavy snow fall
+    case 77: // Snow grains
+    case 85: // Slight snow showers
+    case 86: // Heavy snow showers
+      icon = Icons.ac_unit;
+      break;
+    case 95: // Thunderstorm
+    case 96: // Thunderstorm with slight hail
+    case 99: // Thunderstorm with heavy hail
+      icon = Icons.flash_on;
       break;
     default:
       icon = isDayTime ? Icons.cloud_queue : Icons.nights_stay;
   }
 
-  // Determine color
+  // Determine color based on weather condition
   Color color;
   if (isNight) {
-    color = const Color.fromARGB(237, 7, 37, 104); // Nighttime color
+    color = const Color.fromARGB(237, 7, 37, 104).withOpacity(0.5); // Nighttime color
   } else {
     switch (weatherCode) {
-      case 800: // Clear sky
+      case 0: // Clear sky
         color = Colors.yellow;
         break;
-      case 801: // Few clouds
-        color = Colors.orange;
+      case 1: // Mainly clear
+      case 2: // Partly cloudy
+        color = Colors.orange.withOpacity(0.6);
         break;
-      case 802: // Scattered clouds
-        color = Colors.grey;
-        break;
-      case 803:
-      case 804: // Overcast clouds
+      case 3: // Overcast
         color = Colors.blueGrey;
         break;
-      case 500: // Light rain
-      case 501: // Moderate rain
+      case 45: // Fog
+      case 48: // Fog
+        color = Colors.grey;
+        break;
+      case 51: // Drizzle
+      case 53: // Drizzle
+      case 55: // Drizzle
         color = Colors.lightBlue;
         break;
-      case 502: // Heavy rain
-      case 503:
-      case 504:
+      case 61: // Rain
+      case 63: // Rain
+      case 65: // Rain
         color = Colors.blue;
         break;
-      case 600: // Light snow
-      case 601: // Snow
+      case 71: // Snow
+      case 73: // Snow
+      case 75: // Snow
         color = Colors.white;
         break;
+      case 95: // Thunderstorm
+      case 96: // Thunderstorm
+      case 99: // Thunderstorm
+        color = Colors.deepPurple;
+        break;
       default:
-        color = Colors.blueGrey; // Default color
+        color = Colors.blueGrey;
     }
   }
 

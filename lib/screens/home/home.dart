@@ -20,11 +20,11 @@ class Home extends StatefulWidget {
 
 class _HomeScreenState extends State<Home> {
   final List<CityModel> cities = [
-    CityModel(latitude: 47.010452, longitude: 28.863810, name: 'Chisinau',),
-    CityModel(latitude: 55.953251, longitude: -3.188267, name: 'Edinburgh',),
-    CityModel(latitude: 34.680551, longitude: 33.048537, name: 'Limassol',),
-    CityModel(latitude: 52.520008, longitude: 13.404954, name: 'Berlin',),
-    CityModel(latitude: 37.532600, longitude: 127.024612, name: 'Seoul',),
+    CityModel(latitude: 47.010452, longitude: 28.863810, name: 'Chisinau'),
+    CityModel(latitude: 55.953251, longitude: -3.188267, name: 'Edinburgh'),
+    CityModel(latitude: 34.680551, longitude: 33.048537, name: 'Limassol'),
+    CityModel(latitude: 52.520008, longitude: 13.404954, name: 'Berlin'),
+    CityModel(latitude: 37.532600, longitude: 127.024612, name: 'Seoul'),
     CityModel(latitude: 50.000000, longitude: -85.000000, name: 'Ontario'),
   ];
 
@@ -52,7 +52,7 @@ class _HomeScreenState extends State<Home> {
     final state = Provider.of<WeatherProvider>(context);
 
     return FutureBuilder(
-      future: RepositoryWeather.getWeather(
+      future: RepositoryWeather.getBasicWeather(
         latitude: currentCity.latitude,
         longitude: currentCity.longitude,
       ),
@@ -91,6 +91,14 @@ class _HomeScreenState extends State<Home> {
     );
   }
 
+  // convert a DailyDTO object into a list of DayModel
+  // objects and store it in currentCityWeather
+  // How it works:
+  // Creates an empty list (days). ->
+  // Iterates through dailyModel.time using a for loop. ->
+  // Uses i as the index to access the values from dailyModel. ->
+  // Adds each DayModel object to the days list. ->
+  // Finally, assigns days to currentCityWeather.
   void _dailyDTOParcer(DailyDTO dailyModel) {
     List<DayModel> days = [];
     for (var i = 0; i < dailyModel.time.length; i++) {

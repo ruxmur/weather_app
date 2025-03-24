@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
+import '../../../core/models/weather_day_model.dart';
 import '../../../core/repo/repository_weather.dart';
 import 'models/city_model.dart';
-import 'models/day_model.dart';
 
 class WeatherProvider with ChangeNotifier {
-  List<DayModel> days = [];
+  List<WeatherDayModel> days = [];
   String locationName = 'Loading...';
   double currentTemperature = 0.0;
+  double feelsLikeTemperature = 0.0;
   int currentWeatherCode = 0;
   CityModel? currentCity;
 
@@ -38,22 +39,23 @@ class WeatherProvider with ChangeNotifier {
 
       currentTemperature = currentWeather['temperature_2m'];
       currentWeatherCode = currentWeather['weather_code'];
+      feelsLikeTemperature = currentWeather['apparent_temperature'] ?? currentTemperature;
 
       // Parse daily weather data
-      days.clear();
-      for (var i = 0; i < dailyModel.time.length; i++) {
-        days.add(DayModel(
-          date: dailyModel.time[i],
+      days = dailyModel.time.asMap().entries.map((entry) {
+        final i = entry.key;
+        return WeatherDayModel(
+          date: entry.value,
           minTemperature: dailyModel.temperature2mMin[i],
           maxTemperature: dailyModel.temperature2mMax[i],
+          feelsLike: dailyModel.apparentTemperature?[i] ?? dailyModel.temperature2mMax[i],
           uvIndex: dailyModel.uvIndexMax[i],
           weatherCode: dailyModel.weatherCode[i],
-        ));
-      }
+        );
+      }).toList();
 
       notifyListeners();
     } catch (e) {
-      print("Error: $e");
       locationName = 'Unable to fetch location';
       notifyListeners();
     }
@@ -63,25 +65,4 @@ class WeatherProvider with ChangeNotifier {
     currentCity = city;
     fetchWeatherData(city);
   }
-
-// Future<Position> _getCurrentLocation() async {
-//   bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-//   if (!serviceEnabled) {
-//     return Future.error('Location services are disabled.');
-//   }
-//
-//   LocationPermission permission = await Geolocator.checkPermission();
-//   if (permission == LocationPermission.denied) {
-//     permission = await Geolocator.requestPermission();
-//     if (permission == LocationPermission.denied) {
-//       return Future.error('Location permissions are denied');
-//     }
-//   }
-//
-//   if (permission == LocationPermission.deniedForever) {
-//     return Future.error('Location permissions are permanently denied, we cannot request permissions.');
-//   }
-//
-//   return await Geolocator.getCurrentPosition();
-// }
 }
