@@ -1,0 +1,1 @@
+/Users/ruxmur/StudioProjects/weather_application/build/app/intermediates/cxx/Debug/21m6bj37/obj/x86_64

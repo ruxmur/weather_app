@@ -1,0 +1,20 @@
+{
+  "buildFiles": [
+    "/Users/ruxmur/development/flutter/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/ruxmur/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/Users/ruxmur/StudioProjects/weather_application/android/app/.cxx/Debug/21m6bj37/arm64-v8a",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/ruxmur/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/Users/ruxmur/StudioProjects/weather_application/android/app/.cxx/Debug/21m6bj37/arm64-v8a",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {}
+}
