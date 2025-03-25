@@ -11,10 +11,10 @@ import '../select_city/select_city_screen_components/weather_condition.dart';
 import '../../../core/utils_test/weather_utils.dart';
 import '/screens/home/state/weather_provider.dart';
 
-class SelectCity extends StatelessWidget {
+class SelectCityScreen extends StatelessWidget {
   final CityModel city;
 
-  const SelectCity({super.key, required this.city});
+  const SelectCityScreen({super.key, required this.city});
 
   @override
   Widget build(BuildContext context) {

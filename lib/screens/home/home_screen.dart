@@ -11,14 +11,14 @@ import '/screens/home/state/weather_provider.dart';
 import 'components/city_field.dart';
 import 'components/weather_condition.dart';
 
-class Home extends StatefulWidget {
-  const Home({super.key});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
   @override
-  State<Home> createState() => _HomeScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<Home> {
+class _HomeScreenState extends State<HomeScreen> {
   final List<CityModel> cities = [
     CityModel(latitude: 47.010452, longitude: 28.863810, name: 'Chisinau'),
     CityModel(latitude: 55.953251, longitude: -3.188267, name: 'Edinburgh'),
@@ -28,11 +28,7 @@ class _HomeScreenState extends State<Home> {
     CityModel(latitude: 50.000000, longitude: -85.000000, name: 'Ontario'),
   ];
 
-  CityModel currentCity = CityModel(
-    latitude: 34.680551,
-    longitude: 33.048537,
-    name: 'Limassol',
-  );
+  CityModel currentCity = CityModel(latitude: 34.680551, longitude: 33.048537, name: 'Limassol',);
   List<DayModel> currentCityWeather = [];
 
   // Key for the FutureBuilder (you can use directly 'UniqueKey()' in setState)

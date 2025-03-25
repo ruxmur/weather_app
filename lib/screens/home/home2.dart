@@ -6,14 +6,14 @@ import 'package:weather_application/screens/home/state/models/day_model.dart';
 import '../../core/models/daily_dto.dart';
 import '../../core/repo/repository_weather.dart';
 
-class Home3 extends StatefulWidget {
-  const Home3({super.key});
+class Home2 extends StatefulWidget {
+  const Home2({super.key});
 
   @override
-  State<Home3> createState() => _HomeScreenState();
+  State<Home2> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<Home3> {
+class _HomeScreenState extends State<Home2> {
   final List<CityModel> cities = [
     CityModel(
       latitude: 47.010452,
