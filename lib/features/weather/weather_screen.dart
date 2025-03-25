@@ -7,6 +7,7 @@ import 'package:weather_application/features/weather/presentation/widgets/curren
 import 'package:weather_application/features/weather/presentation/widgets/daily_forecast_carousel.dart';
 import 'package:weather_application/features/weather/presentation/widgets/weather_header.dart';
 import 'package:weather_application/features/weather/presentation/widgets/weather_tabs.dart';
+import '../../core/domain/providers/city_time_provider.dart';
 
 class WeatherScreen extends StatefulWidget {
   final CityModel city;
@@ -27,6 +28,12 @@ class _WeatherScreenState extends State<WeatherScreen> with TickerProviderStateM
     super.initState();
     _controller = WeatherController(city: widget.city)..initialize();
     _tabController = TabController(length: 4, vsync: this);
+    _initializeCityTime();
+  }
+
+  Future<void> _initializeCityTime() async {
+    await Provider.of<CityTimeProvider>(context, listen: false)
+        .updateCityTime(widget.city.latitude, widget.city.longitude);
   }
 
   @override
@@ -69,6 +76,7 @@ class _WeatherScreenState extends State<WeatherScreen> with TickerProviderStateM
                     weatherCode: weatherProvider.currentWeatherCode,
                     temperature: weatherProvider.currentTemperature,
                     weatherDetailsModel: controller.weatherDetailsModel,
+                    cityTime: Provider.of<CityTimeProvider>(context).currentCityTime,
                   ),
                   const SizedBox(height: 20),
                   ForecastCarousel(

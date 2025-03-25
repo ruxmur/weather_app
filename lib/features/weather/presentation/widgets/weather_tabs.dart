@@ -7,6 +7,7 @@ class WeatherTabs extends StatelessWidget {
   final int weatherCode;
   final double temperature;
   final WeatherDetailsModel? weatherDetailsModel;
+  final DateTime cityTime;
 
   const WeatherTabs({
     super.key,
@@ -14,6 +15,7 @@ class WeatherTabs extends StatelessWidget {
     required this.weatherCode,
     required this.temperature,
     required this.weatherDetailsModel,
+    required this.cityTime,
   });
 
   @override
@@ -65,7 +67,6 @@ class WeatherTabs extends StatelessWidget {
 
   // Tab 1: Review
   Widget _buildHourlyForecast(int weatherCode, double temperature) {
-    final currentTime = DateTime.now();
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
@@ -85,14 +86,14 @@ class WeatherTabs extends StatelessWidget {
         // Use List instead of for (var i = 0; i < 24; i++)
         // because it simple iteration (24 hours):
         children: List.generate(24, (i) {
-          final hourTime = currentTime.add(Duration(hours: i));
+          final hourTime = cityTime.add(Duration(hours: i));
           final hourlyWeatherIconData = getWeatherIconData(hourTime, weatherCode);
 
           return Padding(
             padding: const EdgeInsets.fromLTRB(5, 40, 15, 15),
             child: Column(
               children: [
-                Text('${(currentTime.hour + i) % 24}:00'),
+                Text('${hourTime.hour}:00'),
                 const SizedBox(height: 10),
                 Icon(
                   hourlyWeatherIconData.icon,
@@ -118,11 +119,13 @@ class WeatherTabs extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       child: Row(
         children: List.generate(24, (i) {
+          final hourTime = cityTime.add(Duration(hours: i));
+
           return Padding(
             padding: const EdgeInsets.fromLTRB(5, 40, 15, 15),
             child: Column(
               children: [
-                Text('${(currentTime.hour + i) % 24}:00'),
+                Text('${hourTime.hour}:00'),
                 const SizedBox(height: 10),
                 Icon(
                   Icons.water_drop,
@@ -147,11 +150,13 @@ class WeatherTabs extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       child: Row(
         children: List.generate(24, (i) {
+          final hourTime = cityTime.add(Duration(hours: i));
+
           return Padding(
             padding: const EdgeInsets.fromLTRB(5, 40, 15, 15),
             child: Column(
               children: [
-                Text('${(currentTime.hour + i) % 24}:00'),
+                Text('${hourTime.hour}:00'),
                 const SizedBox(height: 10),
                 Icon(
                   // todo introduce real wind arrow

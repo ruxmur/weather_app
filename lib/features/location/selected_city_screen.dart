@@ -23,8 +23,11 @@ class SelectedCityScreen extends StatelessWidget {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage(_getBackgroundImage(
-                WeatherUtils.getWeatherTypeFromCode(state.currentWeatherCode))),
+            image: AssetImage(
+              _getBackgroundImage(
+                WeatherUtils.getWeatherTypeFromCode(state.currentWeatherCode)
+              ),
+            ),
             fit: BoxFit.cover,
           ),
         ),

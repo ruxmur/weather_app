@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'app.dart';
+import 'core/domain/providers/city_time_provider.dart';
 
 void main() {
   // WidgetsFlutterBinding.ensureInitialized() is a method that
@@ -10,5 +12,12 @@ void main() {
   // - When running asynchronous code before calling runApp (e.g., fetching data, initializing services).
   // - When using async in the main function.
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const Application());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => CityTimeProvider()),
+      ],
+      child: const Application(),
+    ),
+  );
 }
