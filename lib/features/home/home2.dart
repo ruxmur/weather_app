@@ -69,7 +69,7 @@ class _HomeScreenState extends State<Home2> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: RepositoryWeather.getWeather(
+      future: WeatherRepository.getWeather(
         latitude: currentCity.latitude,
         longitude: currentCity.longitude,
       ),

@@ -20,19 +20,19 @@ class WeatherProvider with ChangeNotifier {
   Future<void> fetchWeatherData(CityModel city) async {
     try {
       // Fetch the weather data using the location
-      final dailyModel = await RepositoryWeather.getWeather(
+      final dailyModel = await WeatherRepository.getWeather(
         latitude: city.latitude,
         longitude: city.longitude,
       );
 
       // Fetch the location name
-      locationName = await RepositoryWeather.getLocationName(
+      locationName = await WeatherRepository.getLocationName(
         latitude: city.latitude,
         longitude: city.longitude,
       );
 
       // Fetch the current weather data
-      final currentWeather = await RepositoryWeather.getCurrentWeather(
+      final currentWeather = await WeatherRepository.getCurrentWeather(
         latitude: city.latitude,
         longitude: city.longitude,
       );

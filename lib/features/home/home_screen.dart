@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final state = Provider.of<WeatherProvider>(context);
 
     return FutureBuilder(
-      future: RepositoryWeather.getBasicWeather(
+      future: WeatherRepository.getBasicWeather(
         latitude: currentCity.latitude,
         longitude: currentCity.longitude,
       ),

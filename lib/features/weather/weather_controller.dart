@@ -8,16 +8,18 @@ class WeatherController extends ChangeNotifier {
   WeatherDetailsModel? weatherDetailsModel;
   bool isLoading = true;
   String errorMessage = '';
+  List<double> hourlyHumidity = List.filled(24, 0.0);
 
   WeatherController({required this.city});
 
   Future<void> initialize() async {
     await _fetchWeatherDetails();
+    await _fetchHourlyHumidity();
   }
 
   Future<void> _fetchWeatherDetails() async {
     try {
-      final details = await RepositoryWeather.getWeatherDetails(latitude: city.latitude, longitude: city.longitude,);
+      final details = await WeatherRepository.getWeatherDetails(latitude: city.latitude, longitude: city.longitude,);
       weatherDetailsModel = WeatherDetailsModel.fromJson(details);
       isLoading = false;
     } catch (e) {
@@ -30,6 +32,17 @@ class WeatherController extends ChangeNotifier {
         airQuality: 0,
       );
       isLoading = false;
+    }
+    notifyListeners();
+  }
+
+  Future<void> _fetchHourlyHumidity() async {
+    try {
+      final data = await WeatherRepository.getHourlyHumidity(latitude: city.latitude, longitude: city.longitude);
+      hourlyHumidity = data;
+    } catch (e) {
+      hourlyHumidity = List.filled(24, 0.0);
+      errorMessage = 'Failed to load humidity data: ${e.toString()}';
     }
     notifyListeners();
   }

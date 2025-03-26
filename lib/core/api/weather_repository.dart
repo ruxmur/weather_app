@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../domain/weather/daily_dto.dart';
 
-class RepositoryWeather {
+class WeatherRepository {
   static Future<DailyDTO> getWeather({required double latitude, required double longitude}) async {
     //https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current=is_day&daily=weather_code,temperature_2m_max,temperature_2m_min,uv_index_max
     final url = Uri.https('api.open-meteo.com', 'v1/forecast', {
@@ -114,6 +114,30 @@ class RepositoryWeather {
       }
     } catch (e) {
       throw Exception('Failed to fetch weather details: $e');
+    }
+  }
+
+  static Future<List<double>> getHourlyHumidity({required double latitude, required double longitude}) async {
+    final url = Uri.https('api.open-meteo.com', 'v1/forecast', {
+      'latitude': latitude.toString(),
+      'longitude': longitude.toString(),
+      'hourly': 'relative_humidity_2m',
+    });
+
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> decodedBody = jsonDecode(response.body);
+
+        if (decodedBody['hourly'] != null &&
+            decodedBody['hourly']['relative_humidity_2m'] != null) {
+          final List<dynamic> humidityList = decodedBody['hourly']['relative_humidity_2m'];
+          return humidityList.map<double>((e) => e?.toDouble() ?? 0.0).toList();
+        }
+      }
+      return List.filled(24, 0.0);
+    } catch (e) {
+      return List.filled(24, 0.0);
     }
   }
 }

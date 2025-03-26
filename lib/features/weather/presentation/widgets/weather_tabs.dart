@@ -1,6 +1,10 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:weather_application/core/domain/weather/weather_details.dart';
 import 'package:weather_application/features/weather/presentation/widgets/weather_utils.dart';
+
+import '../../weather_controller.dart';
 
 class WeatherTabs extends StatelessWidget {
   final TabController tabController;
@@ -57,7 +61,7 @@ class WeatherTabs extends StatelessWidget {
               // Tab 3: Wind
               _buildWindForecast(),
               // Tab 4: Humidity
-              _buildHumidityChart(),
+              _buildHumidityChart(context),
             ],
           ),
         ),
@@ -113,7 +117,6 @@ class WeatherTabs extends StatelessWidget {
 
   // Tab 2: Precipitations
   Widget _buildPrecipitationForecast() {
-    final currentTime = DateTime.now();
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
@@ -144,7 +147,6 @@ class WeatherTabs extends StatelessWidget {
 
   // Tab 3: Wind
   Widget _buildWindForecast() {
-    final currentTime = DateTime.now();
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
@@ -174,11 +176,125 @@ class WeatherTabs extends StatelessWidget {
     );
   }
 
-  // Tab 4: Humidity
-  // todo get real humidity data throw chart
-  Widget _buildHumidityChart() {
-    return const Center(
-      child: Text('Humidity Chart Placeholder'),
+  // Tab 4: Humidity with synchronized scrolling
+  Widget _buildHumidityChart(BuildContext context) {
+    // Gets the weather data from our app's state management (using Provider).
+    final weatherController = Provider.of<WeatherController>(context);
+    final scrollController = ScrollController();
+
+    // Shows a loading spinner if data isn't ready yet.
+    if (weatherController.isLoading ||
+        weatherController.hourlyHumidity.isEmpty) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    // Define the line chart bar data
+    // lineChartBarData: A preconfigured LineChartBarData object (humidity data).
+    final lineChartBarData = LineChartBarData(
+      //List of FlSpot(x, y) points (ex: FlSpot(0, 50) = midnight at 50% humidity).
+      spots: List.generate(24, (index) {
+        final humidity = index < weatherController.hourlyHumidity.length
+            ? weatherController.hourlyHumidity[index]
+            : 0.0;
+        return FlSpot(index.toDouble(), humidity);
+      }),
+      isCurved: true,
+      color: Colors.indigoAccent,
+      barWidth: 3,
+      // Fills the area under the line with opacity or gradient
+      belowBarData: BarAreaData(
+        show: true,
+        gradient: LinearGradient(
+          colors: [
+            Colors.white.withOpacity(0.2),
+            Colors.blueAccent.withOpacity(0.4)
+          ],
+          begin: Alignment.bottomLeft,
+          end: Alignment.topLeft,
+        ),
+      ),
+      dotData: const FlDotData(show: false),
+    );
+
+    // Calculate total width needed for all hours (60px per hour)
+    final totalWidth = 24 * 60.0;
+
+    return SingleChildScrollView(
+      controller: scrollController,
+      scrollDirection: Axis.horizontal,
+      physics: const ClampingScrollPhysics(),
+      child: SizedBox(
+        width: totalWidth,
+        child: Column(
+          children: [
+            // Humidity percentage labels
+            SizedBox(
+              height: 30,
+              child: Row(
+                children: List.generate(24, (index) {
+                  final humidity = weatherController.hourlyHumidity[index];
+                  return SizedBox(
+                    width: 60,
+                    child: Center(
+                      child: Text(
+                        '${humidity.round()}%',
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+              ),
+            ),
+
+            // The humidity line chart
+            SizedBox(
+              height: 100,
+              child: LineChart(
+                LineChartData(
+                  // Controls touch interactions with the chart.
+                  lineTouchData: const LineTouchData(enabled: false),
+                  // background grid
+                  gridData: const FlGridData(show: false),
+                  titlesData: const FlTitlesData(show: false),
+                  // Configures the chart's border.
+                  borderData: FlBorderData(show: false),
+                  // 0 to 23: Maps to 24 hours (0 = midnight, 23 = 11 PM).
+                  // (Matches hourly data points.)
+                  minX: 0,
+                  maxX: 23,
+                  // 0 to 100: Humidity is displayed as a percentage (0%–100%).
+                  // (Ensures the chart scales predictably for all values.)
+                  minY: 0,
+                  maxY: 100,
+                  lineBarsData: [lineChartBarData],
+                ),
+              ),
+            ),
+
+            // Hour labels
+            SizedBox(
+              height: 40,
+              child: Row(
+                children: List.generate(24, (index) {
+                  final hourTime = cityTime.add(Duration(hours: index));
+                  return SizedBox(
+                    width: 60,
+                    child: Center(
+                      child: Text(
+                        '${hourTime.hour}:00',
+                        style: const TextStyle(fontSize: 12),
+                      ),
+                    ),
+                  );
+                }),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
