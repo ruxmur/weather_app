@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 
 // --- Home screen styles --- //
-const BoxDecoration homeBackground = BoxDecoration(
-  // image: DecorationImage(
-  //   image: NetworkImage('https://gifdb.com/images/thumbnail/funny-man-fighting-strong-wind-ebb1eug8g6yw4uun.gif'),
-  //   fit: BoxFit.cover,
-  // ),
-  color: Color(0xFF8B9B9C),
+BoxDecoration homeBackground = BoxDecoration(
+  image: DecorationImage(
+    image: AssetImage('assets/images/pic.png'),
+    fit: BoxFit.cover,
+    colorFilter: ColorFilter.mode(
+      Colors.black.withOpacity(0.4),
+      BlendMode.lighten,
+    ),
+  ),
 );
 
 const EdgeInsets homePadding = EdgeInsets.symmetric(

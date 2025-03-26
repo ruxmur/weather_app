@@ -116,7 +116,7 @@ class CurrentWeatherCard extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    'Air quality: ${_getAirQualityDescription(weatherDetails?.airQuality ?? 0)}',
+                    'Air: ${_getAirQualityDescription(weatherDetails?.airQuality ?? 0)}',
                     style: const TextStyle(
                       fontSize: 20,
                       color: Colors.white,
