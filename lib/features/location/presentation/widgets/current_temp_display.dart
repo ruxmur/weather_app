@@ -5,10 +5,9 @@ import '../../../../styles/styles.dart';
 Widget buildCurrentTemperatureSection(double currentTemperature) {
   return SizedBox(
     width: 140,
-    height: 176,
+    height: 140,
     child: Stack(
       children: [
-        // if (state.days.isNotEmpty)
         Align(
           alignment: Alignment.center,
           child: Text(

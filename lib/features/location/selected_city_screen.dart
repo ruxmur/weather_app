@@ -5,7 +5,6 @@ import 'package:weather_application/features/location/presentation/widgets/curre
 import 'package:weather_application/features/location/presentation/widgets/forecast_button.dart';
 import 'package:weather_application/features/location/presentation/widgets/location_button.dart';
 import 'package:weather_application/features/location/presentation/widgets/location_section.dart';
-import 'package:weather_application/features/location/presentation/widgets/more_details_button.dart';
 import 'package:weather_application/features/location/presentation/widgets/weather_forecast_list.dart';
 import 'presentation/widgets/weather_condition.dart';
 import '../../../core/utils/weather_utils.dart';
@@ -29,6 +28,10 @@ class SelectedCityScreen extends StatelessWidget {
               ),
             ),
             fit: BoxFit.cover,
+            colorFilter: ColorFilter.mode(
+              Colors.black.withOpacity(0.8),
+              BlendMode.dstATop,
+            ),
           ),
         ),
       child: SafeArea(
@@ -42,10 +45,8 @@ class SelectedCityScreen extends StatelessWidget {
               // Current Temperature Section
               buildCurrentTemperatureSection(state.currentTemperature),
               // Weather Condition
-              buildWeatherCondition(WeatherUtils.getWeatherTypeFromCode(
-                  state.currentWeatherCode)),
-              // More details button
-              buildMoreDetailsButton(),
+              buildWeatherCondition(WeatherUtils.getWeatherTypeFromCode(state.currentWeatherCode)),
+              const SizedBox(height: 30),
               // Weather Forecast List
               ...buildWeatherForecast(context, state.days),
               const SizedBox(height: 20),
