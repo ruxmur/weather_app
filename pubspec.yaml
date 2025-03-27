@@ -32,9 +32,8 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
-    - assets/images/waves.jpeg
-    - assets/images/waves.jpg
-    - assets/images/snow.jpg
-    - assets/images/pic.png
-
+  # everytime when add new assets run:
+  # flutter clean
+  # flutter pub get
+  # flutter run
   uses-material-design: true

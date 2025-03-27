@@ -25,7 +25,7 @@ class CurrentWeatherCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final weatherProvider = Provider.of<WeatherProvider>(context);
     final feelsLike = weatherProvider.feelsLikeTemperature;
-    final weatherIconData = getWeatherIconData(DateTime.now(), currentWeatherCode);
+    final hourlyWeatherIcon = getWeatherIconData(DateTime.now(), currentWeatherCode);
 
     return Container(
       height: 300,
@@ -70,10 +70,10 @@ class CurrentWeatherCard extends StatelessWidget {
                           color: Colors.white,
                         ),
                       ),
-                      Icon(
-                        weatherIconData.icon,
-                        color: weatherIconData.color,
-                        size: 45,
+                      Image.asset(
+                        hourlyWeatherIcon.iconPath,
+                        width: 45,
+                        height: 45,
                       ),
                     ],
                   ),

@@ -1,84 +1,49 @@
 import 'package:flutter/material.dart';
 
-class WeatherIconData {
-  final IconData icon;
-  final Color color;
+import '../../../../core/utils/weather_utils.dart';
 
-  WeatherIconData(this.icon, this.color);
+class WeatherIconData {
+  final String iconPath;
+
+  WeatherIconData(this.iconPath);
 }
 
-WeatherIconData getWeatherIconData(DateTime dateTime, int weatherCode) {
+WeatherIconData getWeatherIconData(DateTime dateTime, int weatherCode, {bool forceDayIcon = false}) {
   final hour = dateTime.hour;
-  final isDayTime = hour >= 6 && hour < 18;
-  final isNight = !isDayTime;
+  final isDayTime = forceDayIcon ? true : (hour >= 6 && hour < 18);
 
-  // WMO Weather code interpretation
-  // todo to use icons like this Image.asset(WeatherUtils.getWeatherIconFromCode(weatherCode))
-  IconData icon;
-  switch (weatherCode) {
-    case 0: // Clear sky
-      icon = isDayTime ? Icons.wb_sunny : Icons.nightlight_round;
+  // Get the weather type based on the code
+  final weatherType = WeatherUtils.getWeatherTypeFromCode(weatherCode);
+  String iconPath;
+
+  // Determine icon path based on weather type and time of day
+  switch (weatherType) {
+    case WeatherType.clear:
+      iconPath = isDayTime
+          ? 'assets/icons/sunny.png'
+          : 'assets/icons/clear_night.png';
       break;
-    case 1: // Mainly clear
-    case 2: // Partly cloudy
-      icon = isDayTime ? Icons.wb_cloudy : Icons.cloud_outlined;
+    case WeatherType.cloudy:
+      iconPath = isDayTime
+          ? 'assets/icons/cloudy.png'
+          : 'assets/icons/cloudy_night.png';
       break;
-    case 3: // Overcast
-      icon = Icons.cloud;
+    case WeatherType.rainy:
+      iconPath = isDayTime
+          ? 'assets/icons/rainy.png'
+          : 'assets/icons/rainy_night.png';
       break;
-    case 45: // Fog
-    case 48: // Depositing rime fog
-      icon = Icons.foggy;
+    case WeatherType.stormy:
+      iconPath = 'assets/icons/storm.png';
       break;
-    case 51: // Light drizzle
-    case 53: // Moderate drizzle
-    case 55: // Dense drizzle
-      icon = Icons.grain;
-      break;
-    case 61: // Slight rain
-    case 63: // Moderate rain
-    case 65: // Heavy rain
-      icon = Icons.beach_access;
-      break;
-    case 71: // Slight snow fall
-    case 73: // Moderate snow fall
-    case 75: // Heavy snow fall
-      icon = Icons.ac_unit;
-      break;
-    case 95: // Thunderstorm
-    case 96: // Thunderstorm with slight hail
-    case 99: // Thunderstorm with heavy hail
-      icon = Icons.flash_on;
+    case WeatherType.sunnyRainy:
+      iconPath = 'assets/icons/sunny_rainy.png';
       break;
     default:
-      icon = isDayTime ? Icons.cloud_queue : Icons.nights_stay;
+      iconPath = isDayTime
+          ? 'assets/icons/sunny.png'
+          : 'assets/icons/clear_night.png';
   }
 
-  // Determine color based on weather condition
-  Color color;
-  if (isNight) {
-    color = const Color.fromARGB(237, 7, 37, 104).withOpacity(0.5); // Nighttime color
-  } else {
-    switch (weatherCode) {
-      // Clear sky
-      case 0: color = Colors.yellow; break;
-      // Mainly clear | Partly cloudy
-      case 1: case 2: color = Colors.orange.withOpacity(0.6); break;
-      // Overcast
-      case 3: color = Colors.blueGrey; break;
-      // Fog
-      case 45: case 48: color = Colors.grey; break;
-      // Drizzle
-      case 51: case 53: case 55: color = Colors.lightBlue; break;
-      // Rain
-      case 61: case 63: case 65: color = Colors.blue; break;
-      // Snow
-      case 71: case 73: case 75: color = Colors.white; break;
-      // Thunderstorm
-      case 95: case 96: case 99: color = Colors.deepPurple; break;
-      default: color = Colors.blueGrey;
-    }
-  }
-
-  return WeatherIconData(icon, color);
+  return WeatherIconData(iconPath);
 }
