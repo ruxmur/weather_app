@@ -49,6 +49,7 @@ class WeatherTabs extends StatelessWidget {
               WindForecastTab(
                 weatherDetailsModel: weatherDetailsModel,
                 cityTime: cityTime,
+                windDirection: weatherDetailsModel?.windDirection ?? 0,
               ),
               HumidityForecastTab(
                 context: context,

@@ -29,6 +29,7 @@ class WeatherController extends ChangeNotifier {
         precipitation: 0,
         humidity: 0,
         windSpeed: 0,
+        windDirection: 0,
         airQuality: 0,
       );
       isLoading = false;

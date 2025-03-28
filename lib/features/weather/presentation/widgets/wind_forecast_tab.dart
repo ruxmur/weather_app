@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import '../../../../core/domain/weather/weather_details.dart';
 import '../../glass_container.dart';
@@ -6,11 +7,13 @@ import 'hourly_forecast_list.dart';
 class WindForecastTab extends StatelessWidget {
   final WeatherDetailsModel? weatherDetailsModel;
   final DateTime cityTime;
+  final double windDirection;
 
   const WindForecastTab({
     super.key,
     required this.weatherDetailsModel,
     required this.cityTime,
+    required this.windDirection,
   });
 
   @override
@@ -20,6 +23,8 @@ class WindForecastTab extends StatelessWidget {
       child: HourlyForecastList(
         children: List.generate(24, (i) {
           final hourTime = cityTime.add(Duration(hours: i));
+          final windDirection = weatherDetailsModel?.windDirection ?? 0;
+          final windSpeed = weatherDetailsModel?.windSpeed ?? 0;
 
           return Padding(
             padding: const EdgeInsets.fromLTRB(5, 0, 15, 0),
@@ -27,12 +32,18 @@ class WindForecastTab extends StatelessWidget {
               children: [
                 Text('${hourTime.hour}:00', style: const TextStyle(color: Colors.white)),
                 const SizedBox(height: 15),
-                // todo introduce real wind arrow
-                Icon(Icons.arrow_forward_rounded, size: 40, color: Colors.white),
+                Transform.rotate(
+                  angle: (windDirection * (pi / 180)), // Convert degrees to radians
+                  child: Icon(
+                    Icons.arrow_upward,
+                    size: 40,
+                    color: Colors.white,
+                  ),
+                ),
                 const SizedBox(height: 15),
                 Text(
-                  '${weatherDetailsModel?.windSpeed.toStringAsFixed(1)} km/h',
-                  style: const TextStyle(color: Colors.white)
+                  '${windSpeed.toStringAsFixed(1)} km/h',
+                  style: const TextStyle(color: Colors.white),
                 ),
               ],
             ),

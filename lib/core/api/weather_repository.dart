@@ -76,6 +76,7 @@ class WeatherRepository {
           'relative_humidity_2m',
           'precipitation',
           'wind_speed_10m',
+          'wind_direction_10m',
           'weather_code',
         ],
         'hourly': 'precipitation_probability',
@@ -105,6 +106,7 @@ class WeatherRepository {
           'precipitation': (currentWeather['precipitation'] ?? 0.0).toDouble(),
           'humidity': (currentWeather['relative_humidity_2m'] ?? 0.0).toDouble(),
           'wind_speed_10m': (currentWeather['wind_speed_10m'] ?? 0.0).toDouble(),
+          'wind_direction_10m': (currentWeather['wind_direction_10m'] ?? 0.0).toDouble(),
           'air_quality': (currentAirQuality['european_aqi'] ?? 0.0).toDouble(),
         };
       } else {
