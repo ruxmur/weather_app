@@ -63,6 +63,7 @@ class _WeatherScreenState extends State<WeatherScreen> with TickerProviderStateM
             body: SingleChildScrollView(
               child: Column(
                 children: [
+                  // const SizedBox(height: 40), // for ios simulator
                   HeaderSection(city: widget.city),
                   CurrentWeatherCard(
                     city: widget.city,
