@@ -4,6 +4,7 @@ import 'package:weather_application/core/domain/weather/weather_details.dart';
 import 'package:weather_application/features/weather/presentation/widgets/precipitation_forecast_tab.dart';
 import 'package:weather_application/features/weather/presentation/widgets/temperature_forecast_tab.dart';
 import 'package:weather_application/features/weather/presentation/widgets/wind_forecast_tab.dart';
+import '../../../../styles/styles.dart';
 import '../../weather_controller.dart';
 import 'humidity_forecast_tab.dart';
 
@@ -74,14 +75,8 @@ class WeatherTabs extends StatelessWidget {
       ],
       labelColor: Colors.black,
       unselectedLabelColor: Colors.black,
-      labelStyle: const TextStyle(
-        fontSize: 14,
-        fontWeight: FontWeight.bold,
-      ),
-      unselectedLabelStyle: const TextStyle(
-        fontSize: 14,
-        fontWeight: FontWeight.normal,
-      ),
+      labelStyle: selectedLabelStyle,
+      unselectedLabelStyle: unselectedLabelStyle,
     );
   }
 }

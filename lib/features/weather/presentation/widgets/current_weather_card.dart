@@ -29,13 +29,7 @@ class CurrentWeatherCard extends StatelessWidget {
 
     return Container(
       height: 300,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Colors.white, Colors.black54],
-          begin: Alignment.bottomLeft,
-          end: Alignment.topLeft,
-        ),
-      ),
+      decoration: weatherContainerDecoration,
       child: SafeArea(
         child: Padding(
           padding: homePadding,
@@ -44,32 +38,12 @@ class CurrentWeatherCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Weather',
-                    style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const Text(
-                    'Now',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
+                  const Text('Weather', style: weatherTextStyle),
+                  const Text('Now', style: nowTextStyle),
                   Row(
                     children: [
-                      Text(
-                        '${currentWeather.toStringAsFixed(1)}º', // Real weather for the selected city
-                        style: const TextStyle(
-                          fontSize: 45,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
+                      // Real weather for the selected city
+                      Text('${currentWeather.toStringAsFixed(1)}º', style: currentWeatherTextStyle),
                       Image.asset(
                         hourlyWeatherIcon.iconPath,
                         width: 45,
@@ -77,13 +51,7 @@ class CurrentWeatherCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Text(
-                    'Feels like ${feelsLike.round().toString()}º',
-                    style: const TextStyle(
-                      fontSize: 20,
-                      color: Colors.white,
-                    ),
-                  ),
+                  Text('Feels like ${feelsLike.round().toString()}º', style: climateTextStyle),
                 ],
               ),
               // Spacer to push the next column to the right
@@ -96,31 +64,19 @@ class CurrentWeatherCard extends StatelessWidget {
                   buildWeatherCondition(WeatherUtils.getWeatherTypeFromCode(currentWeatherCode)),
                   Text(
                     'Precipitation: ${weatherDetails?.precipitation.toStringAsFixed(1)}%',
-                    style: const TextStyle(
-                      fontSize: 20,
-                      color: Colors.white,
-                    ),
+                    style: climateTextStyle,
                   ),
                   Text(
                     'Humidity: ${weatherDetails?.humidity.toStringAsFixed(1)}%',
-                    style: const TextStyle(
-                      fontSize: 20,
-                      color: Colors.white,
-                    ),
+                    style: climateTextStyle,
                   ),
                   Text(
                     'Wind: ${weatherDetails?.windSpeed.toStringAsFixed(1)} km/h',
-                    style: const TextStyle(
-                      fontSize: 20,
-                      color: Colors.white,
-                    ),
+                    style: climateTextStyle,
                   ),
                   Text(
                     'Air: ${_getAirQualityDescription(weatherDetails?.airQuality ?? 0)}',
-                    style: const TextStyle(
-                      fontSize: 20,
-                      color: Colors.white,
-                    ),
+                    style: climateTextStyle,
                   ),
                 ],
               ),
@@ -149,13 +105,6 @@ class CurrentWeatherCard extends StatelessWidget {
     final String formattedWeatherString =
         weatherString[0].toUpperCase() + weatherString.substring(1).toLowerCase();
 
-    return Text(
-      formattedWeatherString,
-      style: TextStyle(
-        fontSize: 24,
-        fontWeight: FontWeight.bold,
-        color: Colors.white,
-      ),
-    );
+    return Text(formattedWeatherString, style: formattedWeatherTextStyle);
   }
 }

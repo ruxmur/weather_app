@@ -3,6 +3,7 @@ import 'package:weather_application/core/domain/location/city.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 import '../../../../core/utils/timezone_utils.dart';
+import '../../../../styles/styles.dart';
 
 class HeaderSection extends StatefulWidget {
   final CityModel city;
@@ -42,10 +43,7 @@ class _HeaderSectionState extends State<HeaderSection> {
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: _isLoading ? const CircularProgressIndicator() : Text(
         '${widget.city.name}   ${TimezoneUtils.formatTime(_localTime)}',
-        style: const TextStyle(
-          fontSize: 20,
-          color: Colors.black,
-        ),
+        style: weatherHeaderTextStyle,
       ),
     );
   }

@@ -38,7 +38,7 @@ Widget buildWeatherForecastItem(
     WeatherType weatherType
     ) {
   return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 1),
+    padding: temperatureForecastPaddingStyle,
     child: Row(
       children: [
         Image.asset(

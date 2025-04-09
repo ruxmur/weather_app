@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/domain/weather/weather_details.dart';
+import '../../../../styles/styles.dart';
 import '../../glass_container.dart';
 import 'hourly_forecast_list.dart';
 
@@ -25,13 +26,13 @@ class PrecipitationForecastTab extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(5, 0, 15, 0),
             child: Column(
               children: [
-                Text('${hourTime.hour}:00', style: const TextStyle(color: Colors.white)),
+                Text('${hourTime.hour}:00', style: glassContainerTextStyle),
                 const SizedBox(height: 15),
-                Image.asset('assets/icons/drop.png', width: 40, height: 40, color: Colors.white),
+                dropImageStyle,
                 const SizedBox(height: 15),
                 Text(
                   '${weatherDetailsModel?.precipitation.toStringAsFixed(1)}%',
-                  style: const TextStyle(color: Colors.white)
+                  style: glassContainerTextStyle
                 ),
               ],
             ),

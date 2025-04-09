@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weather_application/features/weather/presentation/widgets/weather_utils.dart';
+import '../../../../styles/styles.dart';
 import '../../glass_container.dart';
 import 'hourly_forecast_list.dart';
 
@@ -41,11 +42,11 @@ class TemperatureForecastTab extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(5, 0, 15, 0),
             child: Column(
               children: [
-                Text('${hourTime.hour}:00', style: const TextStyle(color: Colors.white)),
+                Text('${hourTime.hour}:00', style: glassContainerTextStyle),
                 const SizedBox(height: 15),
                 Image.asset(hourlyWeatherIcon.iconPath, width: 45, height: 45),
                 const SizedBox(height: 15),
-                Text('${temperature.toStringAsFixed(1)}º', style: const TextStyle(color: Colors.white)),
+                Text('${temperature.toStringAsFixed(1)}º', style: glassContainerTextStyle),
               ],
             ),
           );

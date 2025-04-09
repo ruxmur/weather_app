@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:weather_application/core/domain/location/city.dart';
 
+import '../../../../styles/styles.dart';
+
 class CityField extends StatefulWidget {
   final List<CityModel> cities;
   final Function(CityModel) onCitySelected;
@@ -60,29 +62,17 @@ class CityFieldState extends State<CityField> {
         TextFormField(
           controller: _searchController,
           focusNode: _searchFocusNode,
-          decoration: InputDecoration(
-            labelText: 'Search city',
-            hintText: 'Enter city name',
-            filled: true,
-            fillColor: Colors.white.withOpacity(0.5),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
+          decoration: searchFieldDecoration.copyWith(
             suffixIcon: IconButton(
-              onPressed: () {
-                _searchController.clear();
-              },
-              icon: Icon(Icons.close),
+              onPressed: () => _searchController.clear(),
+              icon: const Icon(Icons.close),
             ),
           ),
         ),
         if (_searchFocusNode.hasFocus)
           Container(
             margin: const EdgeInsets.only(top: 10),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.5),
-              borderRadius: BorderRadius.circular(10),
-            ),
+            decoration: containerDecoration,
             height: 150,
             child: RawScrollbar(
               thumbVisibility: true, // Всегда показывать полосу прокрутки

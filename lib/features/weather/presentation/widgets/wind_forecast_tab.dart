@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import '../../../../core/domain/weather/weather_details.dart';
+import '../../../../styles/styles.dart';
 import '../../glass_container.dart';
 import 'hourly_forecast_list.dart';
 
@@ -30,7 +31,7 @@ class WindForecastTab extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(5, 0, 15, 0),
             child: Column(
               children: [
-                Text('${hourTime.hour}:00', style: const TextStyle(color: Colors.white)),
+                Text('${hourTime.hour}:00', style: glassContainerTextStyle),
                 const SizedBox(height: 15),
                 Transform.rotate(
                   angle: (windDirection * (pi / 180)), // Convert degrees to radians
@@ -43,7 +44,7 @@ class WindForecastTab extends StatelessWidget {
                 const SizedBox(height: 15),
                 Text(
                   '${windSpeed.toStringAsFixed(1)} km/h',
-                  style: const TextStyle(color: Colors.white),
+                  style: glassContainerTextStyle,
                 ),
               ],
             ),

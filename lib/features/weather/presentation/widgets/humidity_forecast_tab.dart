@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import '../../../../styles/styles.dart';
 import '../../glass_container.dart';
 import '../../weather_controller.dart';
 import 'hourly_forecast_header.dart';
@@ -90,17 +91,7 @@ class _HumidityForecastTabState extends State<HumidityForecastTab> {
       color: Colors.indigoAccent,
       barWidth: 3,
       // Fills the area under the line with opacity or gradient
-      belowBarData: BarAreaData(
-        show: true,
-        gradient: LinearGradient(
-          colors: [
-            Colors.white.withOpacity(0.2),
-            Colors.blueAccent.withOpacity(0.4)
-          ],
-          begin: Alignment.bottomLeft,
-          end: Alignment.topLeft,
-        ),
-      ),
+      belowBarData: barAreaDataStyle,
       dotData: const FlDotData(show: false),
     );
   }
@@ -115,10 +106,7 @@ class _HumidityForecastTabState extends State<HumidityForecastTab> {
           return SizedBox(
             width: 60,
             child: Center(
-              child: Text(
-                '${humidity.round()}%',
-                style: const TextStyle(fontSize: 12, color: Colors.white),
-              ),
+              child: Text('${humidity.round()}%', style: hourlyForecastTextStyle),
             ),
           );
         }),
@@ -131,24 +119,7 @@ class _HumidityForecastTabState extends State<HumidityForecastTab> {
     return SizedBox(
       height: 80,
       child: LineChart(
-        LineChartData(
-          // Controls touch interactions with the chart.
-          lineTouchData: const LineTouchData(enabled: false),
-          // background grid
-          gridData: const FlGridData(show: false),
-          titlesData: const FlTitlesData(show: false),
-          // Configures the chart's border.
-          borderData: FlBorderData(show: false),
-          // 0 to 23: Maps to 24 hours (0 = midnight, 23 = 11 PM).
-          // (Matches hourly data points.)
-          minX: 0,
-          maxX: 23,
-          // 0 to 100: Humidity is displayed as a percentage (0%–100%).
-          // (Ensures the chart scales predictably for all values.)
-          minY: 0,
-          maxY: 100,
-          lineBarsData: [lineChartBarData],
-        ),
+        lineChartDataStyle.copyWith(lineBarsData: [lineChartBarData]),
       ),
     );
   }
@@ -162,10 +133,7 @@ class _HumidityForecastTabState extends State<HumidityForecastTab> {
           return SizedBox(
             width: 60,
             child: Center(
-              child: Text(
-                '${hourTime.hour}:00',
-                style: const TextStyle(fontSize: 12, color: Colors.white),
-              ),
+              child: Text('${hourTime.hour}:00', style: hourlyForecastTextStyle),
             ),
           );
         }),

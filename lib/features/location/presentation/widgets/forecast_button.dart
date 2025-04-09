@@ -9,10 +9,7 @@ Widget buildFiveDayForecastButton(BuildContext context) {
     onPressed: () {
       Navigator.pushNamed(context, '/weather', arguments: city);
     },
-    style: ElevatedButton.styleFrom(
-      backgroundColor: Colors.transparent,
-      foregroundColor: Colors.white,
-    ),
+    style: locationButtonStyle,
     child: const Text(
       'see more',
       style: locationButtonTextStyle,

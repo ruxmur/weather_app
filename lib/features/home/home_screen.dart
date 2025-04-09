@@ -70,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     // Current Temperature
                     buildCurrentTemperatureSection(state.currentTemperature),
                     const SizedBox(height: 44),
-                    // Weather Condition
+                    // Weather condition
                     getWeatherCondition(currentCityWeather),
                     // Search city field
                     CityField(

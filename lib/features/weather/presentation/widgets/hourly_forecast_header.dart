@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../styles/styles.dart';
+
 class HourlyForecastHeader extends StatelessWidget {
   const HourlyForecastHeader({super.key});
 
@@ -9,14 +11,7 @@ class HourlyForecastHeader extends StatelessWidget {
       children: [
         Icon(Icons.access_time, color: Colors.white),
         SizedBox(width: 8),
-        Text(
-          'Hourly Forecast',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        Text('Hourly Forecast', style: forecastTextStyle),
       ],
     );
   }

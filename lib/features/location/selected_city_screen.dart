@@ -6,6 +6,7 @@ import 'package:weather_application/features/location/presentation/widgets/forec
 import 'package:weather_application/features/location/presentation/widgets/location_button.dart';
 import 'package:weather_application/features/location/presentation/widgets/location_section.dart';
 import 'package:weather_application/features/location/presentation/widgets/weather_forecast_list.dart';
+import '../../styles/styles.dart';
 import 'presentation/widgets/weather_condition.dart';
 import '../../../core/utils/weather_utils.dart';
 import '../../core/domain/providers/weather_provider.dart';
@@ -28,10 +29,7 @@ class SelectedCityScreen extends StatelessWidget {
               ),
             ),
             fit: BoxFit.cover,
-            colorFilter: ColorFilter.mode(
-              Colors.black.withOpacity(0.8),
-              BlendMode.dstATop,
-            ),
+            colorFilter: colorFilterStyle,
           ),
         ),
       child: SafeArea(

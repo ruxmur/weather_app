@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import '../../../../core/utils/weather_utils.dart';
 
 class WeatherIconData {

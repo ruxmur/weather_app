@@ -6,10 +6,7 @@ Widget buildLocationButton(BuildContext context) {
     onPressed: () {
       Navigator.pop(context);
     },
-    style: ElevatedButton.styleFrom(
-      backgroundColor: Colors.transparent,
-      foregroundColor: Colors.white,
-    ),
+    style: locationButtonStyle,
     child: const Text(
       'Go Back to Main Screen',
       style: locationButtonTextStyle,
